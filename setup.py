@@ -11,15 +11,6 @@ import os
 from setuptools import setup
 from setuptools.command.test import test as TestCommand
 
-def package_data(pkg, root):
-    """Generic function to find package_data for `pkg` under `root`."""
-    data = []
-    for dirname, _, files in os.walk(os.path.join(pkg, root)):
-        for fname in files:
-            data.append(os.path.relpath(os.path.join(dirname, fname), pkg))
-
-    return {pkg: data}
-
 
 class Tox(TestCommand):
     user_options = [('tox-args=', 'a', "Arguments to pass to tox")]
@@ -70,7 +61,11 @@ setup(
     package_dir={
         'submit_and_compare': 'submit_and_compare',
     },
-    package_data=package_data("submit_and_compare", "static"),
+    package_data={
+        'submit_and_compare': [
+            'static/*',
+        ],
+    },
     classifiers=[
         # https://pypi.python.org/pypi?%3Aaction=list_classifiers
         'Intended Audience :: Developers',
